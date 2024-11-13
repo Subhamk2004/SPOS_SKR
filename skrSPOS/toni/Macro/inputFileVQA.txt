@@ -1,0 +1,93 @@
+This input file demonstrates how macros can be used to simplify repetitive assembly operations by defining common operations as macros, then calling these macros with specific arguments within the main program. Let’s break down each section:
+
+### Macro Definitions
+
+1. **Macro `INCR`**
+   ```assembly
+   MACRO
+   INCR &A,&B,&AREG
+       MOVER &AREG,&A
+       ADD &A,&B
+       MOVEM &AREG,&A
+   MEND
+   ```
+   - This macro `INCR` is designed to increment the value of a variable `&A` by `&B` using a specified register (`&AREG`).
+   - **Parameters**: `&A` and `&B` (operands to increment) and `&AREG` (register used in the operation).
+   - **Operations**:
+     - `MOVER &AREG, &A`: Moves the contents of `&A` to `&AREG`.
+     - `ADD &A, &B`: Adds `&B` to the value in `&AREG`.
+     - `MOVEM &AREG, &A`: Stores the incremented result back into `&A`.
+   - `MEND` ends the macro definition.
+
+2. **Macro `ADDS`**
+   ```assembly
+   MACRO
+   ADDS &F, &S
+       MOVER AREG, &F
+       ADD AREG, &S
+       MOVEM AREG, &S
+       WRITE &S
+   MEND
+   ```
+   - This macro `ADDS` adds two values and stores the result in the second parameter.
+   - **Parameters**: `&F` and `&S` (values to be added).
+   - **Operations**:
+     - `MOVER AREG, &F`: Loads `&F` into the `AREG`.
+     - `ADD AREG, &S`: Adds the contents of `&S` to `AREG`.
+     - `MOVEM AREG, &S`: Stores the result in `&S`.
+     - `WRITE &S`: Outputs the updated value of `&S`.
+
+3. **Macro `SUBS`**
+   ```assembly
+   MACRO
+   SUBS &F, &S
+       MOVER BREG, &F
+       SUB BREG, &S
+       MOVEM BREG, &S
+       WRITE &S
+   MEND
+   ```
+   - The `SUBS` macro subtracts `&S` from `&F` and stores the result in `&S`.
+   - **Parameters**: `&F` and `&S`.
+   - **Operations**:
+     - `MOVER BREG, &F`: Loads `&F` into the `BREG`.
+     - `SUB BREG, &S`: Subtracts the contents of `&S` from `BREG`.
+     - `MOVEM BREG, &S`: Stores the result back in `&S`.
+     - `WRITE &S`: Outputs the updated value of `&S`.
+
+### Main Program
+
+The main program utilizes the above macros for specific arithmetic operations between two variables, `N1` and `N2`.
+
+1. **`START 100`**
+   - Begins the program at location `100`.
+
+2. **`READ N1` and `READ N2`**
+   - Reads two values from the input into variables `N1` and `N2`.
+
+3. **`ADDS N1, N2`**
+   - Calls the `ADDS` macro with `N1` and `N2` as arguments.
+   - This operation will add `N1` to `N2` and store the result in `N2`, then output `N2`.
+
+4. **`SUBS N1, N2`**
+   - Calls the `SUBS` macro with `N1` and `N2`.
+   - This operation will subtract `N2` from `N1` and store the result in `N2`, then output `N2`.
+
+5. **`INCR N1, N2, CREG`**
+   - Calls the `INCR` macro with `N1`, `N2`, and `CREG`.
+   - This operation will increment `N1` by `N2` using `CREG` as the register and store the result in `N1`.
+
+6. **`STOP`**
+   - Terminates program execution.
+
+7. **Variable Declarations**
+   - `N1 DS 2` and `N2 DS 2` declare storage space for `N1` and `N2`, each occupying 2 units.
+
+8. **`END`**
+   - Marks the end of the program for the assembler.
+
+### Summary of Macro Expansion
+
+The assembler will replace each macro call in the main program with the respective operations defined in the macro body. This reduces repetitive code and makes the program cleaner, as complex operations are encapsulated in the macro definitions. 
+
+When expanded, the main program will include the operations specified in each macro for `ADDS`, `SUBS`, and `INCR` without needing to repeat the detailed instructions each time. The macros streamline tasks like reading, arithmetic, and writing, enhancing code clarity and maintainability.

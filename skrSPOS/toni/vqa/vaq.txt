@@ -1,0 +1,158 @@
+Two-Pass Assembler
+What is an assembler, and why do we need a two-pass assembler?
+
+An assembler translates assembly language into machine code. A two-pass assembler is needed to handle forward references (symbols or labels used before they're defined) by collecting information on the first pass and resolving these references in the second pass.
+Describe the difference between Pass-I and Pass-II of an assembler.
+
+Pass-I generates the symbol table and intermediate code, handling directives and recording symbols and addresses. Pass-II reads this intermediate code, resolves addresses, and generates machine code.
+What is an intermediate code file, and why is it generated in Pass-I?
+
+An intermediate code file holds partially processed code, with symbolic addresses instead of actual addresses, to handle forward references. It’s used in Pass-II to produce the final machine code.
+What data structures are typically used for a symbol table and for storing the intermediate code?
+
+Common data structures include hash tables for the symbol table, which allows efficient lookups, and arrays or linked lists for the intermediate code to maintain order.
+Explain a few common assembler directives and their purposes.
+
+Examples include .data to define data storage sections, .text to specify code sections, and .org to set the starting address for code or data.
+What is the significance of handling pseudo-instructions in an assembler?
+
+Pseudo-instructions simplify programming by representing complex instructions. They are translated into multiple machine instructions by the assembler.
+How are errors handled during Pass-I and Pass-II?
+
+In Pass-I, errors like undefined symbols or syntax issues are logged. Pass-II checks for unresolved symbols or address issues and flags them.
+How does an assembler handle forward references, and why can they pose a challenge?
+
+Forward references are resolved by storing symbols and addresses in Pass-I and back-referencing them in Pass-II. They’re challenging because undefined symbols cannot be fully processed in a single pass.
+
+Two-Pass Macroprocessor
+What is a macroprocessor, and what are macros used for in programming?
+
+A macroprocessor expands macros, which are pre-defined code templates that automate repetitive code tasks, simplifying code and reducing errors.
+Why is a two-pass approach used in macroprocessing?
+
+In Pass-I, macro definitions are stored, and in Pass-II, macro calls are expanded. This separation ensures all macros are defined before they’re called.
+Explain the role of the Macro Name Table (MNT) and the Macro Definition Table (MDT).
+
+The MNT stores macro names and the locations of their definitions, while the MDT stores the actual macro code, allowing easy access and expansion of macros.
+What is an intermediate code file in the context of macroprocessing?
+
+It’s code without any macro definitions, created after Pass-I. It includes calls to macros, which are expanded in Pass-II.
+How does the macroprocessor distinguish between macro definitions and normal code?
+
+Macro definitions start with keywords like MACRO and end with MEND. Regular code lacks these markers.
+What are the benefits of using macros in assembly language programming?
+
+Macros simplify complex instructions, reduce coding effort, minimize errors, and increase code readability.
+How does a macroprocessor handle nested macros?
+
+Nested macros are processed by treating each macro call independently and resolving inner macros before outer ones.
+What is the difference between a macro call and a function call?
+
+A macro call is expanded inline, replacing code directly. A function call involves a jump to a code location, with parameters passed and memory overhead.
+
+
+
+
+Dynamic Link Library (DLL) Implementation
+What is a Dynamic Link Library, and why is it important?
+
+A DLL is a shared library containing code and data used by multiple programs at runtime, reducing memory usage and disk space.
+Explain the difference between a static library and a dynamic library.
+
+A static library is linked at compile time and included in the executable, while a dynamic library is linked at runtime and loaded only when needed.
+How is a DLL loaded at runtime, and what functions are used for this purpose?
+
+DLLs are loaded with functions like LoadLibrary (Windows) or dlopen (Linux), allowing access to library functions during program execution.
+What are the advantages of using DLLs in software development?
+
+DLLs save memory by allowing shared code, reduce program size, and support modularity and version updates without recompiling.
+Explain how symbol resolution is handled in DLLs.
+
+Symbols in a DLL are resolved using their addresses, typically loaded into a program’s address space via dynamic linking.
+How can DLLs be shared between different processes?
+
+DLLs are mapped into a shared memory space, allowing multiple processes to access the same code and data.
+What challenges do DLLs pose in terms of versioning and dependency management?
+
+Versioning can lead to "DLL Hell" if programs rely on specific versions, causing compatibility issues and conflicts.
+
+
+
+
+CPU Scheduling Algorithms
+What is CPU scheduling, and why is it essential in operating systems?
+
+CPU scheduling manages the execution order of processes, optimizing CPU usage and improving system performance.
+Explain the main differences between FCFS, SJF, Priority, and Round Robin scheduling.
+
+FCFS runs jobs in arrival order; SJF chooses the shortest job first; Priority selects based on priority; Round Robin cycles through jobs for a set time slice.
+What is the "starvation" problem in scheduling, and which algorithms are prone to it?
+
+Starvation happens when lower-priority processes don’t get CPU time, often occurring in Priority and SJF algorithms.
+How does Round Robin scheduling work, and how does the time quantum affect its performance?
+
+Round Robin assigns each process a fixed time quantum, switching if unfinished. Smaller quanta improve responsiveness but increase overhead.
+Explain preemptive vs. non-preemptive scheduling.
+
+Preemptive scheduling allows interruption of a process, while non-preemptive runs processes to completion once started.
+What is a turnaround time, waiting time, and response time in CPU scheduling?
+
+Turnaround time is total time in the system, waiting time is time in the queue, and response time is time until the first CPU allocation.
+How does the Shortest Job First (SJF) algorithm optimize average waiting time?
+
+SJF minimizes average waiting time by executing shorter tasks first, reducing the time other processes wait in the queue.
+
+
+
+
+Readers-Writers (BW) Synchronization Problem
+What is the Readers-Writers problem in synchronization?
+
+It’s a synchronization issue where multiple readers can access data simultaneously, but writers require exclusive access.
+Explain the difference between the first and second readers-writers problems.
+
+The first prioritizes readers over writers, while the second prevents writer starvation, balancing access.
+What are the goals of implementing readers-writers synchronization?
+
+To prevent data inconsistency and ensure readers and writers can access shared resources safely.
+How does the use of semaphores help in solving the readers-writers problem?
+
+Semaphores control access, ensuring only one writer or multiple readers can access shared data simultaneously.
+Explain the concept of mutual exclusion and how it is achieved in the readers-writers problem.
+
+Mutual exclusion prevents simultaneous access to critical sections, achieved with locks that allow only one writer or multiple readers.
+What is starvation in the context of synchronization, and how can it be prevented?
+
+Starvation occurs when a process waits indefinitely. Priority adjustments or fair locking mechanisms can prevent it.
+How is deadlock prevented or avoided in readers-writers synchronization?
+
+Deadlock is prevented by ordering operations and careful use of semaphores to avoid circular waiting.
+
+
+
+
+
+
+
+Memory Placement Strategies
+What are memory placement strategies, and why are they important in OS?
+
+They manage how memory is allocated for processes, affecting performance and fragmentation.
+Explain the difference between first-fit, best-fit, and worst-fit memory placement strategies.
+
+First-fit places in the first large-enough space; best-fit chooses the smallest sufficient space; worst-fit selects the largest space.
+What is fragmentation, and how does it occur in memory management?
+
+Fragmentation is wasted memory. External fragmentation occurs with scattered free spaces; internal occurs within allocated blocks.
+How does the best-fit strategy help reduce fragmentation?
+
+Best-fit minimizes external fragmentation by leaving smaller gaps, fitting memory allocations more efficiently.
+What are external and internal fragmentation, and how are they different?
+
+External fragmentation happens between allocated blocks; internal occurs within a block due to wasted space.
+Explain why dynamic memory allocation strategies might lead to memory fragmentation.
+
+Dynamic allocation creates scattered free memory spaces, causing fragmentation as memory use changes.
+How do compaction and paging help mitigate fragmentation issues?
+
+Compaction moves processes to reduce gaps; paging divides memory into fixed sizes, eliminating external fragmentation.

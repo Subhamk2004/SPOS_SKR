@@ -1,0 +1,16 @@
+javac SampleDLL.java
+javac -h . SampleDLL.java
+
+( find /usr/lib/jvm -name jni.h )
+( the above will give some output like below:
+/usr/lib/jvm/java-21-openjdk/include/jni.h
+)
+
+g++ -o libSampleDLL.so -shared -fPIE -I /usr/lib/jvm/java-17-openjdk-amd64/include/ -I /usr/lib/jvm/java-17-openjdk-amd64/include/linux/  SampleDLL.cpp
+or
+g++ -o libSampleDLL.so -shared -fPIC -I /usr/lib/jvm/java-21-openjdk/include/ -I /usr/lib/jvm/java-21-openjdk/include/linux/ SampleDLL.cpp
+
+java -Djava.library.path=/home/shorabh-singh/Downloads/SPOS-master/DLL SampleDLL
+
+locate jni.h
+locate jni_md.h

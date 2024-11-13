@@ -1,0 +1,43 @@
+I'll provide the theory, explanation, and viva questions for this macro processor pass 2 implementation.
+
+Theory:
+Macro Pass 2 is the expansion phase of macro processing where:
+- The program reads the output from Pass 1 and the source program
+- Performs actual macro expansion by replacing macro calls with their definitions
+- Substitutes actual parameters for formal parameters
+- Generates the expanded source code
+
+The main purpose of Pass 2 is to:
+1. Read the expanded macro definitions stored during Pass 1
+2. Identify macro calls in the source program
+3. Replace macro calls with their corresponding expanded code
+4. Handle parameter substitution
+5. Generate the final expanded program
+
+Code Explanation:
+This code implements Pass 2 of a macro processor that:
+1. Reads three key files:
+   - inputmac2.txt (source program)
+   - ALA.txt (Argument List Array from Pass 1)
+   - Generates pass2_output.txt (final expanded code)
+2. Uses a LinkedHashMap to store macro expansions
+3. Processes the program after the START directive
+4. Replaces macro calls with their expanded definitions
+5. Maintains the original program structure for non-macro instructions
+
+Viva Questions and Answers:
+
+1. Q: Why does the code use a LinkedHashMap to store macro expansions?
+   A: The LinkedHashMap is used to store macro names as keys and their expanded definitions as values. It provides efficient lookup during macro expansion while maintaining the order of insertions, which is important for preserving the program structure.
+
+2. Q: How does the code identify where to start macro expansion in the source program?
+   A: The code uses a flag variable that is set to 1 when it encounters the "START" directive in the source program. This ensures that macro expansion only occurs within the actual program code and not in the header or macro definitions.
+
+3. Q: What is the significance of the ALA.txt file in Pass 2?
+   A: The ALA.txt file contains the expanded macro code from Pass 1 along with the parameter substitutions. This file is essential for Pass 2 as it provides the actual expanded code that will replace macro calls in the source program.
+
+4. Q: How does the code handle the expansion of nested macros?
+   A: The code relies on the expanded definitions stored in the ALA.txt file, which already contains the properly expanded nested macros from Pass 1. When a macro call is encountered, it simply replaces it with the full expanded code, including any nested macro expansions.
+
+5. Q: What is the purpose of checking "if(currline.contains("Expanded"))" in the code?
+   A: This check helps identify the start of expanded macro code sections in the ALA.txt file. When found, it extracts the macro name and its corresponding expanded code to store in the output HashMap for later use during macro expansion.

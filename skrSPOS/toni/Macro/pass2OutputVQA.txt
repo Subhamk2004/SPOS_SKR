@@ -1,0 +1,74 @@
+The code you’ve provided is a simple assembly language program involving basic arithmetic operations (addition and subtraction) and I/O operations (reading and writing values). Let's break down what each line of the code does, as well as the role of each instruction and symbol.
+
+### Code Breakdown
+
+1. **`START 100`**
+   - This directive instructs the assembler to start the program with the location counter set to `100`.
+
+2. **`READ N1`**
+   - Reads an input value and stores it in the memory location labeled `N1`.
+
+3. **`READ N2`**
+   - Reads another input value and stores it in the memory location labeled `N2`.
+
+4. **`MOVER AREG, N1`**
+   - Moves the value stored in `N1` to the `AREG` (Accumulator Register).
+
+5. **`ADD AREG, N2`**
+   - Adds the value in `N2` to the value in `AREG`, storing the result back in `AREG`.
+
+6. **`MOVEM AREG, N2`**
+   - Moves the result from `AREG` into `N2`, updating `N2` with the sum of `N1` and `N2`.
+
+7. **`WRITE N2`**
+   - Writes the updated value of `N2` to the output.
+
+8. **`MOVER BREG, N1`**
+   - Moves the value stored in `N1` to `BREG` (another register).
+
+9. **`SUB BREG, N2`**
+   - Subtracts the value in `N2` from `BREG`, storing the result back in `BREG`.
+
+10. **`MOVEM BREG, N2`**
+    - Moves the result from `BREG` into `N2`, updating `N2` with the difference between `N1` and `N2`.
+
+11. **`WRITE N2`**
+    - Writes the updated value of `N2` to the output.
+
+12. **`MOVER CREG, N1`**
+    - Moves the value stored in `N1` to `CREG`.
+
+13. **`ADD N1, N2`**
+    - Adds the value of `N2` directly to `N1`, which would typically involve adding `N1` to itself if `N1` were initially loaded into a register. This line might need clarification, as it might be interpreted as adding the contents of `N1` and `N2`.
+
+14. **`MOVEM CREG, N1`**
+    - Moves the result from `CREG` back into `N1`.
+
+15. **`STOP`**
+    - Ends the program execution.
+
+16. **`N1 DS 2`**
+    - Declares a storage space of size 2 units for the variable `N1`.
+
+17. **`N2 DS 2`**
+    - Declares a storage space of size 2 units for the variable `N2`.
+
+18. **`END`**
+    - Marks the end of the program for the assembler.
+
+### Explanation of Each Step
+
+- The program starts at memory address `100` and performs several operations involving reading, arithmetic calculations (addition and subtraction), and writing.
+- The initial values of `N1` and `N2` are set by the `READ` operations.
+- The `ADD`, `SUB`, and `MOVEM` operations perform arithmetic calculations and store the results back in `N2`.
+- `WRITE` operations output the updated values of `N2` after each calculation.
+
+### Purpose of the Program
+
+The program reads two values into `N1` and `N2`, adds them, stores the result in `N2`, and outputs it. It then computes the difference (`N1 - N2`), updates `N2`, and outputs it again. The final part appears to move the contents of `N1` to `CREG` and update `N1` based on an additional add operation.
+
+### Potential Machine Code for the Program
+
+The `Pass2Macro` output would convert each of these instructions into corresponding machine code (like your previous Pass1Asm output), resolving symbol addresses for `N1` and `N2` as well as specific opcodes for each assembly operation (`MOVER`, `ADD`, `SUB`, `MOVEM`, etc.).
+
+Let me know if you need an interpretation of how each line of this code would look in its final machine language form or if you have any specific questions about this program's structure.

@@ -1,0 +1,44 @@
+I'll analyze this code and provide you with the theory, explanation, and viva questions for this macro processor pass 1 implementation.
+
+Theory:
+A macro processor is a program that processes macros in source code. It performs macro expansion by replacing macro invocations with their corresponding definitions. The processing typically happens in two passes:
+
+Pass 1:
+- Identifies macro definitions and stores them in tables
+- Creates data structures like MNT (Macro Name Table), MDT (Macro Definition Table), and ALA (Argument List Array)
+- Processes nested macro definitions
+- Records the mapping between macro parameters and arguments
+
+Key Data Structures Used:
+1. MNT (Macro Name Table): Stores macro names and pointers to their definitions in MDT
+2. MDT (Macro Definition Table): Stores the actual macro definitions
+3. ALA (Argument List Array): Stores the mapping between formal and actual parameters
+
+Code Explanation:
+This code implements Pass 1 of a macro processor that:
+1. Reads input from a file containing macro definitions and program code
+2. Creates and maintains MNT, MDT, and ALA data structures
+3. Processes nested macros
+4. Handles macro parameters and arguments
+5. Outputs the processed tables to separate files (MNT.txt, MDT.txt, ALA.txt)
+
+Viva Questions and Answers:
+
+1. Q: What is the purpose of using LinkedHashMap for MNT implementation?
+   A: LinkedHashMap is used because it maintains the insertion order of elements while providing fast lookup operations. This is important for macro processing as the order of macro definitions needs to be preserved while still allowing quick access to macro definitions during expansion.
+
+2. Q: How does the code handle nested macros?
+   A: The code uses a counter variable 'isMacro' that keeps track of nesting levels. When a MACRO directive is encountered, the counter is incremented, and when MEND is found, it's decremented. This allows proper processing of nested macro definitions.
+
+3. Q: Why are three different output files created in this implementation?
+   A: The three output files serve different purposes:
+   - MNT.txt stores the macro names and their locations in MDT
+   - MDT.txt stores the actual macro definitions
+   - ALA.txt stores the argument mappings for each macro call
+   This separation makes it easier for Pass 2 to process the macros and perform expansion.
+
+4. Q: How are macro parameters handled in this implementation?
+   A: Macro parameters are processed by splitting the parameter string on commas, and each parameter is assigned a positional notation (#0, #1, etc.). These are stored in the ALA along with their corresponding arguments during macro calls.
+
+5. Q: What is the significance of the 'start' variable in the code?
+   A: The 'start' variable is used to indicate when the actual program code begins (after the START directive). This helps distinguish between macro definitions and actual program code that needs to be processed for macro expansion.

@@ -1,0 +1,120 @@
+Apologies for the misunderstanding, Mr. Let me break down the explanation in the pattern you requested, focusing on the theory, code explanation, and viva questions.
+
+### **Theory**:
+
+In this Java program, the goal is to perform **Macro Processing - Pass 2**. The program reads two files:
+1. `ALA.txt`: This contains the macro definitions and their expanded versions.
+2. `inputmac2.txt`: This contains the assembly code that includes macro calls.
+
+The program processes the macro calls and replaces them with the macro definitions using the data from `ALA.txt`. The result is written to `pass2_output.txt`.
+
+The key concepts involved are:
+- **Macro Expansion**: A macro in assembly is a set of instructions that can be reused by invoking its name. In Pass 2, the macro calls in the code are replaced by the actual instructions defined in the macro definition.
+- **File Handling**: The program uses Java's `BufferedReader` and `BufferedWriter` for file reading and writing, which allows efficient handling of large text files.
+
+### **Code Explanation**:
+
+1. **BufferedReader and File Reading**:
+   - The `BufferedReader` is used to read from two files: `ALA.txt` (which contains the macro definitions) and `inputmac2.txt` (which contains the source code with macro calls).
+   
+2. **Storing Macro Definitions**:
+   - The program stores the expanded definitions from `ALA.txt` in a `LinkedHashMap` (`output`) where the key is the macro name and the value is the expanded code.
+   - It looks for lines containing `Expanded` and extracts the macro name and its corresponding code.
+
+3. **Processing the Source Code**:
+   - It scans through `inputmac2.txt` and looks for the `START` keyword to begin macro replacement.
+   - For each line, it checks if the line contains a macro name from the `output` map. If it does, it replaces the macro call with the expanded code.
+   - If the macro is not found, the program writes the line as it is.
+
+4. **Writing the Output**:
+   - After processing all the lines, the expanded code is written to `pass2_output.txt`.
+
+### **Code**:
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class macro_pass_2 {
+
+    public static void main(String[] args) {
+        try {
+            // Set up BufferedReaders to read the files
+            BufferedReader br = new BufferedReader(new FileReader("inputmac2.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("pass2_output.txt"));
+            BufferedReader br2 = new BufferedReader(new FileReader("ALA.txt"));
+
+            // LinkedHashMap to store macro names and their expanded code
+            LinkedHashMap<String, String> output = new LinkedHashMap<String, String>();
+            String m;
+            String alal;
+
+            // Read the ALA.txt file and store macro expansions
+            while ((alal = br2.readLine()) != null) {
+                if (alal.contains("Expanded")) {
+                    String part[] = alal.split("\\s+");
+                    String str = "";
+                    // Collect macro expansion
+                    while (!((alal = br2.readLine()).contains("ALA"))) {
+                        str = str + alal + "\n";
+                    }
+                    output.put(part[2], str); // Store macro name and its expanded code
+                }
+            }
+
+            String currline;
+            int flag = 0;
+
+            // Read the input source code and replace macros
+            while ((currline = br.readLine()) != null) {
+                String part[] = currline.split("\\s+");
+
+                if (currline.contains("START")) {
+                    flag = 1;
+                }
+
+                if (flag == 1) {
+                    // If the macro is found in the output map, expand it
+                    if (output.containsKey(part[1])) {
+                        bw.write(output.get(part[1]));
+                        System.out.print(output.get(part[1]));
+                    } else {
+                        // Otherwise, write the line as it is
+                        System.out.println(currline);
+                        bw.write(currline + "\n");
+                    }
+                }
+            }
+
+            // Close all streams
+            bw.close();
+            br.close();
+            br2.close();
+
+        } catch (Exception e) {
+            System.out.println("ERROR:" + e);
+        }
+    }
+}
+```
+
+### **Viva Questions and Answers**:
+
+1. **Q1: What is the role of `BufferedReader` and `BufferedWriter` in the program?**
+   - **Answer**: `BufferedReader` is used to read the contents of the files (`inputmac2.txt` and `ALA.txt`) efficiently, especially for large files. `BufferedWriter` is used to write the expanded code to the output file (`pass2_output.txt`), allowing efficient writing of text.
+
+2. **Q2: How does the program identify a macro call in the source code?**
+   - **Answer**: The program checks if a line in the source code contains a macro name. It does this by splitting the line and checking if the second part of the line (after splitting by spaces) matches a macro name from the `output` map.
+
+3. **Q3: What is the purpose of the `LinkedHashMap<String, String> output` in the code?**
+   - **Answer**: The `output` map stores macro names as keys and their corresponding expanded code as values. This allows quick lookup and replacement of macro calls in the source code with their expanded versions.
+
+4. **Q4: Explain the role of `flag` in the program.**
+   - **Answer**: The `flag` variable is used to mark the point after the `START` keyword in the source code. Once `START` is encountered, `flag` is set to `1`, and the program starts processing macro calls and replacing them with expanded code.
+
+5. **Q5: What happens if the macro is not found in the `output` map?**
+   - **Answer**: If the macro is not found in the `output` map, the program simply writes the original line from the source code to the output file without any changes.
+
+---
+
+Let me know if you need any further explanation or more detailed answers!

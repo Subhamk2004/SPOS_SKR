@@ -1,0 +1,95 @@
+I'll break down the theory, explanation, and provide viva questions for this Assembly Language Pass 1 code.
+
+Theory:
+This is an implementation of Pass 1 of a two-pass assembler. The main purposes of Pass 1 are:
+1. Generate intermediate code
+2. Create symbol table (SYMTAB)
+3. Create literal table (LITTAB)
+4. Create pool table (POOLTAB)
+5. Handle assembly directives
+6. Process labels and assign addresses
+
+Key Components:
+1. Symbol Table: Stores program symbols and their attributes (address, index)
+2. Literal Table: Stores literals used in the program
+3. Pool Table: Manages literal pools
+4. Location Counter (LC): Keeps track of memory addresses
+5. Intermediate Code: Generated code for Pass 2
+
+Important Data Structures Used:
+- LinkedHashMap for SYMTAB
+- ArrayList for LITTAB and POOLTAB
+- BufferedReader/BufferedWriter for file operations
+
+Explanation of Key Methods:
+1. parseFile(): Main method that:
+   - Processes input assembly code line by line
+   - Handles labels, opcodes, and operands
+   - Generates intermediate code
+   - Updates tables accordingly
+
+2. expr(): Evaluates expressions involving symbols
+3. printIC(), printSYMTAB(), PrintLITTAB(), printPOOLTAB(): Output generation methods
+
+Viva Questions and Answers:
+
+Q1: What is the purpose of Pass 1 in assembly language processing?
+A1: Pass 1's main purposes are:
+- Define symbols and assign addresses
+- Generate intermediate code
+- Create symbol table, literal table, and pool table
+- Process assembly directives
+- Maintain location counter
+
+Q2: Explain the data structures used in this implementation.
+A2: The code uses:
+- LinkedHashMap for SYMTAB to maintain symbol order and provide quick lookups
+- ArrayList for LITTAB to store literals sequentially
+- ArrayList for POOLTAB to manage literal pools
+- These provide efficient storage and retrieval of assembly program elements
+
+Q3: How does the location counter (lc) work in this implementation?
+A3: The location counter:
+- Starts from 0 or value specified by START
+- Increments based on instruction size
+- Adjusts for DS/DC declarations
+- Can be modified by ORIGIN directive
+- Tracks memory addresses for symbols and instructions
+
+Q4: What is the purpose of the LTORG directive handling in the code?
+A4: LTORG handling:
+- Forces literal pool dumping
+- Updates POOLTAB with new literal pool
+- Assigns addresses to literals
+- Generates intermediate code for literals
+- Resets literal pool pointer
+
+Q5: How are forward references handled in this implementation?
+A5: Forward references are handled by:
+- Initially storing symbols with address -1
+- Maintaining symbol table indices
+- Updating addresses when symbols are defined
+- Using symbol table index in intermediate code
+
+Q6: Explain the format of intermediate code generated.
+A6: Intermediate code format:
+- (Class, Code) pairs
+- Classes include IS (Instructions), DL (Declarations), AD (Assembler Directives)
+- Operands represented by (S,index) for symbols, (L,index) for literals
+- Constants represented by (C,value)
+
+Q7: What is the significance of POOLTAB?
+A7: POOLTAB:
+- Manages literal pools
+- Stores starting index of each literal pool
+- Updated during LTORG and END directives
+- Helps in organizing literals efficiently
+
+Q8: How does the code handle assembly directives like START, ORIGIN, and EQU?
+A8: The code:
+- START: Initializes location counter
+- ORIGIN: Modifies location counter based on expression
+- EQU: Assigns value to symbol based on expression
+- Generates appropriate intermediate code for each directive
+
+These questions and answers cover the main aspects of the Pass 1 implementation and should help in understanding the code thoroughly.

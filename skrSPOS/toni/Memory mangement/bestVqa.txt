@@ -1,0 +1,52 @@
+I'll provide the theory, explanation, and viva questions for this Best Fit Memory Allocation implementation.
+
+Theory:
+Best Fit is a memory allocation strategy where:
+- The process is allocated to the smallest available memory block that can accommodate it
+- It searches through all available blocks to find the smallest sufficient block
+- Aims to minimize internal fragmentation
+- May lead to external fragmentation over time
+
+Key Concepts:
+1. Internal Fragmentation: Unused memory within an allocated block
+2. External Fragmentation: Unused memory between allocated blocks
+3. Memory Utilization: Efficient use of available memory space
+4. Search Overhead: Time taken to find the best fitting block
+
+Code Explanation:
+This implementation:
+1. Takes input for:
+   - Number of memory blocks and their sizes
+   - Number of processes and their memory requirements
+2. Uses a vector to track allocations
+3. For each process:
+   - Searches all blocks to find the smallest sufficient block
+   - Updates block size after allocation
+   - Records allocation in the allocation vector
+4. Finally displays the allocation results showing:
+   - Process number
+   - Process size
+   - Allocated block number
+
+Viva Questions and Answers:
+
+1. Q: What makes Best Fit different from First Fit and Worst Fit algorithms?
+   A: Best Fit searches for the smallest block that can accommodate the process, unlike First Fit which takes the first available sufficient block, or Worst Fit which takes the largest available block. This makes Best Fit more efficient in terms of memory utilization but potentially slower due to the full search requirement.
+
+2. Q: Why does the code use a vector<int> allocation initialized with -1?
+   A: The allocation vector is initialized with -1 to indicate that processes are initially unallocated. A value of -1 serves as a flag to show that the process couldn't be allocated to any block. When allocation is successful, the block number (>0) replaces the -1.
+
+3. Q: How does the program handle cases where a process cannot be allocated to any available block?
+   A: If no suitable block is found for a process (bestIdx remains -1), the allocation array keeps its initial value of -1 for that process, indicating allocation failure. The program displays this -1 in the output, showing that the process couldn't be allocated.
+
+4. Q: What is the time complexity of this Best Fit implementation?
+   A: The time complexity is O(n*m) where n is the number of processes and m is the number of blocks. This is because for each process, the algorithm needs to search through all blocks to find the best fit. This makes it less efficient than First Fit in terms of search time.
+
+5. Q: What are the advantages and disadvantages of using Best Fit memory allocation?
+   A: Advantages:
+   - Minimizes internal fragmentation
+   - Better memory utilization compared to First Fit and Worst Fit
+   Disadvantages:
+   - Slower than First Fit due to full search requirement
+   - Can lead to external fragmentation
+   - May create many small unusable blocks over time

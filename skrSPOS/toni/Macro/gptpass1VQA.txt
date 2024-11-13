@@ -1,0 +1,73 @@
+The Java program you provided implements the first pass of macro processing, often used in assemblers or preprocessors. It processes a file containing macro definitions and creates three output files (`MNT.txt`, `MDT.txt`, and `ALA.txt`) to store the results of the first pass. The first pass typically performs tasks like reading macro definitions, storing macro names and locations, and expanding macros with their arguments.
+
+Here's an explanation of the code along with the viva questions and answers:
+
+### Code Explanation:
+
+1. **Reading the Input File**:
+   ```java
+   FileReader fr = null;
+   BufferedReader br = null;
+   fr = new FileReader(inputFile);
+   br = new BufferedReader(fr);
+   ```
+   - Opens the file `input_macro.txt` for reading, which contains macro definitions.
+   - A `BufferedReader` is used for efficient reading of lines from the file.
+
+2. **Data Structures**:
+   ```java
+   LinkedHashMap<String, Integer> MNT = new LinkedHashMap<String, Integer>();
+   ArrayList<LinkedHashMap<String, String>> ALA = new ArrayList<LinkedHashMap<String, String>>();
+   ArrayList<String> MDT = new ArrayList<String>();
+   ```
+   - `MNT`: Macro Name Table, which stores macro names and their corresponding locations in the `MDT`.
+   - `ALA`: Argument List Array, storing the arguments for each macro.
+   - `MDT`: Macro Definition Table, where the actual macro body is stored.
+
+3. **Output Files**:
+   - The program creates `MNT.txt`, `MDT.txt`, and `ALA.txt` to store the macro definitions, arguments, and processed information, respectively.
+
+4. **Processing the Input File**:
+   - The program reads the input file line by line and processes it based on whether it finds a macro definition or macro usage.
+   - When a macro is defined, it stores the name in `MNT` and the body in `MDT`.
+   - When a macro is used, it expands the macro using the information stored in `MNT`, `MDT`, and `ALA`.
+
+5. **Generating Output**:
+   - After processing all the lines, it writes the contents of the `MNT`, `MDT`, and `ALA` to their respective output files.
+   - `MNT.txt` stores the macro name and its corresponding location in the `MDT`.
+   - `MDT.txt` stores the macro definitions.
+   - `ALA.txt` stores the argument lists for each macro.
+
+6. **Error Handling**:
+   - The program handles `IOException` using a `try-catch` block to ensure any errors in file operations are captured and printed.
+
+### Viva Questions and Answers:
+
+#### 1. **What is the purpose of the `MNT` and `MDT` tables?**
+   **Answer:**
+   - `MNT` (Macro Name Table) stores the names of the macros and their corresponding locations in the `MDT` (Macro Definition Table).
+   - `MDT` contains the actual macro definitions, which are expanded when a macro is called.
+
+#### 2. **What is the role of the `ALA` in the macro processing?**
+   **Answer:**
+   `ALA` (Argument List Array) stores the arguments for each macro. It is used to map the macro arguments to their respective positions in the `MDT` when expanding a macro.
+
+#### 3. **How does the program handle macro expansion?**
+   **Answer:**
+   - The program looks up the macro name in the `MNT` to find its location in the `MDT`.
+   - It then retrieves the macro definition from `MDT`, and if arguments are passed, replaces the argument placeholders in the macro body with the provided argument values.
+
+#### 4. **What is the significance of the `isMacro` variable in the program?**
+   **Answer:**
+   The `isMacro` variable helps track whether the program is currently processing a macro definition. It ensures that the macro definition is correctly stored in the `MDT` and allows macro usage to be expanded later.
+
+#### 5. **Explain the logic for handling macro parameters and argument substitution.**
+   **Answer:**
+   - When a macro is defined with parameters, the parameters are stored in the `ALA` table as key-value pairs.
+   - During macro expansion, the arguments provided in the macro call are substituted for the corresponding placeholders in the macro definition using the values stored in `ALA`.
+
+### Additional Insights:
+- **File Operations**: The program uses `BufferedReader` to read input and `BufferedWriter` to write output efficiently.
+- **Macro Processing**: This is a basic implementation of macro handling in assemblers, focusing on the first pass of macro processing. It doesn't handle some advanced macro processing features like nested macros or recursive macros, but the basic framework is set up.
+
+This explanation should help you understand the code's logic and be able to answer questions related to macro processing during a viva.

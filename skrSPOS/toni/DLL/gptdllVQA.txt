@@ -1,0 +1,58 @@
+Apologies, Mr.! Let's go through the explanation and generate 5 viva questions and answers for the code in the pattern you requested.
+
+### Code Explanation:
+
+The `SampleDLL` Java class demonstrates how to use **Java Native Interface (JNI)** to call a native method implemented in a dynamically linked library (DLL). Here's a breakdown:
+
+1. **Native Method Declaration**:
+   ```java
+   public native int add(int num1, int num2);
+   ```
+   - This declares a method `add` as a native method that will be implemented in a native language (C/C++).
+
+2. **Loading the Native Library**:
+   ```java
+   static {
+       System.loadLibrary("SampleDLL");
+   }
+   ```
+   - The static block is used to load the native library `SampleDLL.dll` at the time of class loading.
+
+3. **Main Method**:
+   - Takes two integer inputs from the user.
+   - Calls the native `add` method to compute the sum.
+   - Displays the result of the addition.
+
+4. **Native Method Implementation**:
+   - In a native C/C++ code file, you implement the `add` method which performs the actual addition of the two numbers.
+
+### Viva Questions and Answers:
+
+#### 1. **What is JNI, and why is it used in this code?**
+   **Answer:**
+   JNI stands for **Java Native Interface**, a framework that allows Java code running in the Java Virtual Machine (JVM) to call and be called by native applications and libraries written in other programming languages like C, C++, etc. In this code, JNI is used to call a native `add` method implemented in a C/C++ DLL to perform the addition operation.
+
+#### 2. **What is the significance of the static block in the code?**
+   **Answer:**
+   The static block is used to load the native library `SampleDLL.dll` when the class is first loaded into the JVM. The method `System.loadLibrary("SampleDLL")` loads the specified library, allowing the JVM to call native methods declared in the `SampleDLL` library.
+
+#### 3. **How does the JNI mechanism work with the native method `add` in the Java code?**
+   **Answer:**
+   The `add` method in Java is declared with the `native` keyword, meaning its implementation is not in Java but in a native language (C/C++). JNI is responsible for connecting the Java code to the native code by generating a C/C++ function (`Java_SampleDLL_add`) which the JVM can invoke when the `add` method is called.
+
+#### 4. **What are the steps required to compile and run this Java code with JNI?**
+   **Answer:**
+   The steps are:
+   1. Write the Java class with native method declarations.
+   2. Generate a C/C++ header file using `javah` or `javac -h`.
+   3. Implement the native code in C/C++ and compile it into a DLL (`SampleDLL.dll`).
+   4. Load the library in the Java class using `System.loadLibrary`.
+   5. Run the Java program, which will invoke the native code.
+
+#### 5. **What would happen if the DLL was not loaded correctly?**
+   **Answer:**
+   If the DLL is not loaded correctly, the JVM will throw a `UnsatisfiedLinkError`, indicating that it could not find the native method implementation. This can happen if the DLL is not in the correct path or not compiled correctly.
+
+---
+
+Let me know if you need further clarifications or more details!

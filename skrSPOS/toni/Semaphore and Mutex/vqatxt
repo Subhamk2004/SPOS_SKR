@@ -1,0 +1,51 @@
+I'll provide the theory, explanation, and viva questions for this Readers-Writers Problem implementation.
+
+Theory:
+The Readers-Writers Problem is a classical synchronization problem where multiple readers can read data simultaneously, but writers need exclusive access. The key requirements are:
+1. Multiple readers can read simultaneously
+2. Only one writer can write at a time
+3. When a writer is writing, no reader can read
+4. Writers must wait for readers to finish before writing
+
+The solution uses semaphores for synchronization:
+- readlock: Controls access to the readcount variable
+- writelock: Controls access to the shared resource
+- readcount: Tracks number of active readers
+
+Code Explanation:
+This implementation:
+1. Uses two classes: Read and Write implementing Runnable interface
+2. Uses semaphores for synchronization:
+   - readlock (initial value 1)
+   - writelock (initial value 1)
+3. Allows user to input sequence of read/write operations
+4. Creates and executes threads based on the input sequence
+5. Implements the first readers-writers problem where readers have priority
+
+Key Features:
+- Multiple readers can read simultaneously
+- Writers get exclusive access
+- Uses proper synchronization to prevent race conditions
+- Allows dynamic creation of reader/writer threads
+
+Viva Questions and Answers:
+
+1. Q: Why are two different semaphores (readlock and writelock) used in this implementation?
+   A: Two semaphores serve different purposes:
+   - readlock protects the readcount variable from concurrent access
+   - writelock ensures exclusive access for writers and prevents readers from reading while writing is in progress
+
+2. Q: What is the significance of the readcount variable in this implementation?
+   A: The readcount variable keeps track of how many readers are currently reading. When the first reader arrives (readcount becomes 1), it acquires the writelock to prevent writers from entering. When the last reader leaves (readcount becomes 0), it releases the writelock to allow writers to enter.
+
+3. Q: Can multiple readers read simultaneously in this implementation? Why?
+   A: Yes, multiple readers can read simultaneously because:
+   - Readers only block other readers briefly while updating readcount
+   - Once the first reader has acquired writelock, subsequent readers can enter without acquiring writelock again
+   - The writelock is only released when the last reader finishes
+
+4. Q: How does this implementation handle writer starvation?
+   A: This implementation does not prevent writer starvation. Since readers have priority, if readers keep coming continuously, writers might have to wait indefinitely. This is known as the first readers-writers problem. To prevent writer starvation, additional mechanisms would need to be implemented.
+
+5. Q: What is the purpose of Thread.sleep() in both reader and writer implementations?
+   A: Thread.sleep() simulates the time taken for reading and writing operations. In a real application, these would be replaced with actual read/write operations. The sleep times (2500ms for readers, 1000ms for writers) help demonstrate the concurrent execution of readers and the exclusive access of writers.

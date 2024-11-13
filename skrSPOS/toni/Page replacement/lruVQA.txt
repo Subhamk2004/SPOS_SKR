@@ -1,0 +1,143 @@
+Apologies for missing the pattern. Here's a detailed explanation of the code you provided, structured as you requested:
+
+### **Code Explanation:**
+
+#### **Objective:**
+The code implements the **LRU (Least Recently Used)** page replacement algorithm in C++. It simulates a memory system where pages are accessed, and when memory is full, the least recently used page is replaced with a new one. The program also tracks page faults and page hits, displaying the current state of memory after each access.
+
+#### **Key Concepts:**
+1. **Page Fault:** Occurs when the requested page is not present in memory.
+2. **Page Hit:** Occurs when the requested page is already in memory.
+3. **LRU Algorithm:** Replaces the least recently used page when memory is full.
+
+---
+
+### **Code Walkthrough:**
+
+1. **Function `pageFaults`**:
+   - **Parameters:**
+     - `pages`: A vector of integers representing the sequence of page accesses.
+     - `capacity`: The number of frames (or slots) in memory.
+   - **Variables:**
+     - `frames`: A vector storing the pages currently in memory.
+     - `order`: A deque that tracks the access order of pages (used for LRU).
+     - `pageFaults`: An integer counter for the total number of page faults.
+     - `pageHits`: A vector tracking whether each access was a page hit (`1`) or fault (`0`).
+     - `pageFaultsArr`: A vector that marks `1` for a fault and `0` for a hit for each page access.
+
+2. **Logic for Accessing Pages:**
+   - The program loops through each page in the sequence (`pages[]`):
+     - If the page is **not in `frames[]`**, it is a page fault:
+       - If the memory is full (i.e., the number of pages in `frames[]` equals `capacity`), the least recently used page (i.e., the one at the front of `order`) is replaced by the new page.
+       - If there is space in memory, the page is simply added.
+       - Update `order` to mark the new page as recently used.
+     - If the page **is already in `frames[]`**, it is a page hit:
+       - The page is moved to the most recently used position in `order`.
+   - After each page access (hit or fault), the program prints the current contents of `frames[]`.
+
+3. **Display Results:**
+   - After processing all pages, the program outputs:
+     - The **page hits array** (`pageHits[]`).
+     - The **page faults array** (`pageFaultsArr[]`).
+     - The **total page faults** count.
+
+---
+
+### **Code Details:**
+
+```cpp
+void pageFaults(const vector<int>& pages, int capacity) {
+    vector<int> frames;                      // Stores pages in memory
+    deque<int> order;                        // Tracks LRU order
+    int pageFaults = 0;                      // Count of page faults
+    vector<int> pageHits(pages.size(), 0);   // 1 for hit, 0 for miss
+    vector<int> pageFaultsArr(pages.size(), 0); // 1 for fault, 0 for hit
+```
+
+- **`frames[]`** stores the pages that are currently in memory.
+- **`order`** tracks the LRU order (most recent to least recent).
+- **`pageHits[]`** stores whether each page access resulted in a hit.
+- **`pageFaultsArr[]`** stores whether each page access resulted in a fault.
+
+```cpp
+for (int i = 0; i < pages.size(); i++) {
+    int page = pages[i];
+```
+
+- Loop through each page access from the `pages[]` array.
+
+```cpp
+    if (find(frames.begin(), frames.end(), page) == frames.end()) {
+        pageFaults++;
+        pageFaultsArr[i] = 1;  // Mark as page fault
+```
+
+- If the page is not found in `frames[]`, it's a page fault. Increment the fault counter and mark the index in `pageFaultsArr[]` as `1`.
+
+```cpp
+        if (frames.size() == capacity) {
+            int lru = order.front();  // Get the least recently used page
+            order.pop_front();
+            for(int j = 0; j < frames.size(); j++){
+                if(frames[j] == lru) frames[j] = page;
+            }
+        } else {
+            frames.push_back(page);
+        }
+```
+
+- If the memory is full (`frames.size() == capacity`), remove the least recently used page (the one at the front of `order`) and replace it with the new page.
+- Otherwise, if there is space, add the page to `frames[]`.
+
+```cpp
+        order.push_back(page);  // Mark the page as recently used
+    } else {
+        pageHits[i] = 1;  // Mark as page hit
+        order.erase(find(order.begin(), order.end(), page));  // Remove the page from its old position
+        order.push_back(page);  // Move it to the end (most recently used)
+    }
+```
+
+- If the page is found in `frames[]`, it's a page hit. Move the page to the end of the `order` deque to mark it as most recently used.
+
+```cpp
+    cout << "Frame after accessing page " << page << ": ";
+    for (int p : frames) cout << p << " ";
+    cout << endl;
+```
+
+- Display the contents of `frames[]` after accessing the page.
+
+---
+
+### **Final Output:**
+
+After processing all pages, the program will print:
+- **Page Hits Array**: `0 0 0 0 1 0 1 0 1 0` (1 means hit, 0 means fault).
+- **Page Faults Array**: `1 1 1 1 0 1 0 1 0 1` (1 means fault, 0 means hit).
+- **Total Page Faults**: `7`.
+
+---
+
+### **Viva Questions and Answers:**
+
+1. **What is a page fault?**
+   - A page fault occurs when the requested page is not found in memory and needs to be loaded into memory.
+
+2. **What is the purpose of the `order` deque in the code?**
+   - The `order` deque is used to track the order of page accesses. It helps implement the LRU algorithm by keeping track of the most recently used pages.
+
+3. **What would happen if you used a queue instead of a deque for `order`?**
+   - A queue only allows removal from the front and insertion at the rear. This would not allow efficient updates to the order when a page is accessed, as a deque allows removing from any position.
+
+4. **How is a page hit handled in this code?**
+   - When a page hit occurs (i.e., the page is already in memory), the page is moved to the most recently used position in the `order` deque.
+
+5. **What is the time complexity of the `find()` function in this code?**
+   - The time complexity of the `find()` function used to check if a page is in memory is O(n), where `n` is the number of frames. This could be optimized by using a hash map or a set.
+
+---
+
+### **Summary:**
+
+The code implements an **LRU page replacement** algorithm, efficiently tracking page faults and hits while displaying the state of memory after each page access. It uses a `deque` to manage the LRU order and handles page replacements based on the least recently used policy. The implementation works well for small to medium input sizes but can be further optimized for larger datasets by improving the lookup time for frames.

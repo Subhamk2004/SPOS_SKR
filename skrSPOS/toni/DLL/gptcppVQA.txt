@@ -1,0 +1,54 @@
+Here’s an explanation of the C/C++ code implementing the native method and the corresponding viva questions and answers in the pattern you requested:
+
+### Code Explanation:
+
+1. **Include Statements**:
+   ```c
+   #include <stdio.h>
+   #include "SampleDLL.h"
+   ```
+   - `stdio.h`: Standard input-output header for general C functionality (though not used here explicitly, it's generally included for debugging or printing).
+   - `SampleDLL.h`: This header file is automatically generated when running the `javac -h` command, which creates the C/C++ header from the Java class with native methods. This header contains the necessary JNI function signatures.
+
+2. **Native Method Implementation**:
+   ```c
+   JNIEXPORT int JNICALL Java_SampleDLL_add(JNIEnv *env, jobject javaobj, jint num1, jint num2)
+   {
+       return num1 - num2;
+   }
+   ```
+   - `JNIEXPORT` and `JNICALL`: These are macros to ensure the method is properly exported with the correct calling convention, making it accessible from the Java code.
+   - `Java_SampleDLL_add`: This is the JNI function that implements the native `add` method. It is named in a specific format: `Java_<fully qualified class name>_<method name>`. Since the Java class is `SampleDLL` and the method is `add`, it results in `Java_SampleDLL_add`.
+   - `JNIEnv *env`: A pointer to the JNI environment, used to interact with Java objects.
+   - `jobject javaobj`: Represents the Java object calling the native method.
+   - `jint num1, jint num2`: These are the input parameters, corresponding to the integers passed from the Java method.
+
+   The `Java_SampleDLL_add` function returns the result of subtracting `num2` from `num1`, which is different from the Java method where it was intended to perform addition. 
+
+### Viva Questions and Answers:
+
+#### 1. **What is the purpose of the `Java_SampleDLL_add` function in this code?**
+   **Answer:**
+   The function `Java_SampleDLL_add` implements the native method `add` declared in the Java class `SampleDLL`. It performs the operation of subtracting `num2` from `num1` and returns the result. This function is invoked from the Java code when the native `add` method is called.
+
+#### 2. **Why is the method name `Java_SampleDLL_add` structured this way?**
+   **Answer:**
+   The method name follows the JNI naming convention. It is structured as `Java_<fully qualified class name>_<method name>`. In this case, the Java class is `SampleDLL` and the method is `add`. The JNI function name must match this pattern for the Java Virtual Machine (JVM) to correctly map the native function to the Java method.
+
+#### 3. **What is the significance of the `JNIEXPORT` and `JNICALL` macros?**
+   **Answer:**
+   - `JNIEXPORT` is a macro used to ensure that the native method is exported correctly from the shared library.
+   - `JNICALL` specifies the calling convention, ensuring the method follows the appropriate calling convention for JNI functions. Together, they ensure the method can be called from Java via JNI without issues.
+
+#### 4. **What would happen if the return value in `Java_SampleDLL_add` were `num1 + num2` instead of `num1 - num2`?**
+   **Answer:**
+   If the return value were `num1 + num2`, it would match the expected behavior as per the original Java code, where the native method was intended to perform addition. In this case, changing it would correct the subtraction to addition, thus returning the sum of `num1` and `num2` rather than their difference.
+
+#### 5. **What is the role of `JNIEnv *env` and `jobject javaobj` in this native method?**
+   **Answer:**
+   - `JNIEnv *env`: This pointer is used to access the JNI environment, which provides methods to interact with Java objects, strings, arrays, and other Java types.
+   - `jobject javaobj`: Represents the Java object from which the native method was called. In this case, it is the `SampleDLL` object. Though not used in this specific function, it can be used to access methods and fields of the Java object within the native method.
+
+---
+
+These questions and answers should help clarify the functionality of the C/C++ implementation of the JNI method and how it integrates with the Java side.

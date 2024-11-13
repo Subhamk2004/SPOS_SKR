@@ -1,0 +1,80 @@
+The code you've provided appears to be part of the implementation of a pass 1 assembler, which is part of the two-pass assembly process. In assembly language, the two-pass process is used to translate assembly code into machine code (or intermediate code). Let’s break down what’s happening step-by-step in the code.
+What is Pass 1 of an Assembler?
+
+Pass 1 of an assembler is responsible for:
+
+    Building Symbol Tables (SYMTAB): The assembler identifies symbols (such as variables, labels, constants) and stores them in a symbol table. This table maps symbols to their corresponding addresses.
+    Literal Table (LITTAB): This table is used to store literals (constants) encountered in the code.
+    Pool Table (POOLTAB): A pool table is used to manage the literals that appear in the code in multiple places, helping with better management of memory addresses.
+    Generating Intermediate Code (IC): The assembler generates an intermediate representation of the source program, which will later be used in Pass 2 to generate the final machine code.
+
+Components of the Code:
+
+    Classes and Data Structures:
+        SYMTAB: A LinkedHashMap storing symbols, with the key as the symbol name and the value as a Tables object (which likely stores the symbol, its address, and its index).
+        LITTAB: An ArrayList storing literals, which will be replaced with actual addresses in Pass 2.
+        POOLTAB: A list of integers, which represents the pool of literals for efficient management.
+
+    Key Methods and Their Functionality:
+
+        Constructor (Pass1asm): Initializes the data structures (SYMTAB, LITTAB, POOLTAB) and sets the location counter (lc) to 0. It also adds the first entry to POOLTAB (the literal pool).
+
+        parseFile: This is the core method that processes the assembly file (input.txt) line by line.
+            It splits each line into its components (label, opcode, operands) and processes them depending on the type of statement (such as START, END, ORIGIN, EQU, LTORG, etc.).
+            The location counter (lc) is updated based on the type of instruction or directive.
+            If a label is encountered, it is added to the symbol table (SYMTAB).
+            If a literal is encountered, it is added to the literal table (LITTAB), and a reference is made to it in the pool table (POOLTAB).
+            Intermediate Code is generated and written to IC.txt.
+            The method also handles the special cases like START, END, ORIGIN, EQU, etc., using specific logic for each.
+
+        Handling Directives and Instructions:
+            START: This defines the starting address of the program and sets the location counter (lc).
+            ORIGIN: This sets the location counter based on a specified symbol or address.
+            EQU: It defines constants or addresses based on the expression provided.
+            DC/DS: These represent "Define Constant" and "Define Space", respectively. DC is used to define data values, while DS is used to define memory space.
+            LTORG: Literal pool generation directive, which generates code for literals encountered in the program.
+            IS (Instruction Set): The opcode for machine instructions is looked up, and intermediate code is generated for them.
+
+    Intermediate Code Generation:
+        The intermediate code is a form of representation of the assembly instructions, written in a more machine-readable form (e.g., (AD,01) is the opcode for a particular operation).
+        The parseFile method processes the input assembly file, handling different instructions and directives, and generates intermediate code. For example:
+            (DL,02): This represents a data literal (e.g., a constant value).
+            (IS,0x): Represents an instruction set (opcode).
+            (AD,01): Represents an address assignment.
+
+    Symbol Table (SYMTAB):
+        Symbols like labels are processed and stored in the symbol table. Each symbol is assigned an index and an address.
+        When a label (like LOOP, START) is encountered, it is added to SYMTAB with its corresponding address.
+
+    Literal Table (LITTAB):
+        Literals, which are constants like =5 or ='hello', are collected in the literal table. These literals are assigned indices and addresses when they are encountered.
+
+    Pool Table (POOLTAB):
+        The pool table keeps track of which literals are in use. It keeps a reference to where in the literal pool each literal starts. Each time a new literal is encountered or processed, it adds a new entry to the pool.
+
+    Printing:
+        After parsing, the program prints the contents of the symbol table (SYMTAB), literal table (LITTAB), and pool table (POOLTAB), along with the intermediate code (IC.txt), to help verify that everything was processed correctly.
+
+What Does It Do?
+
+This program essentially simulates Pass 1 of an assembler:
+
+    It reads a simple assembly language program from input.txt.
+    It processes the program line by line, identifying labels, operations, constants, and memory allocation directives.
+    It builds up three key tables:
+        SYMTAB (Symbol Table): Stores symbols (labels, variables) and their memory addresses.
+        LITTAB (Literal Table): Stores literals (constants).
+        POOLTAB (Pool Table): Tracks the literals' positions in memory.
+    It generates intermediate code that can later be used in Pass 2 to generate machine code.
+    It outputs the results to files (IC.txt, SYMTAB.txt, LITTAB.txt, POOLTAB.txt) and prints them to the console for review.
+
+How Does It Work?
+
+    Input Parsing: The program reads an assembly language source file (input.txt) line by line.
+    Symbol and Literal Handling: It identifies and processes symbols (labels, constants) and adds them to the appropriate tables (SYMTAB, LITTAB).
+    Location Counter (lc): This counter tracks where in memory each instruction or data item should be placed. It is updated with each directive or instruction processed.
+    Intermediate Code Generation: For each instruction or directive, the program generates intermediate code (a machine-readable form of the program) that will be used in Pass 2 to generate final machine code.
+
+Conclusion
+
+In essence, this program is an intermediate step in the assembly process. It focuses on symbol resolution, literal handling, and generating intermediate code. This is crucial for generating the final machine code (done in Pass 2). The assembler makes the source program machine-readable by breaking down its instructions and data into structured formats, which can later be translated into executable machine code.

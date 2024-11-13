@@ -1,0 +1,124 @@
+I'll break down the theory, explain the code, and provide viva questions for this Java Native Interface (JNI) example.
+
+Theory:
+This code demonstrates Java Native Interface (JNI), which allows Java code to:
+1. Call native applications/libraries written in other languages (C, C++, Assembly)
+2. Be called by native applications
+3. Access system-level operations not available in Java
+4. Load Dynamic Link Libraries (DLL) for platform-specific functionality
+
+Key Components:
+1. Native Method Declaration
+2. DLL Loading
+3. JNI Implementation
+4. Native Method Call
+
+Explanation:
+The code:
+1. Loads a native library using System.loadLibrary()
+2. Declares a native method for addition
+3. Gets user input for two numbers
+4. Calls the native method to perform addition
+5. Displays the result
+
+Viva Questions and Answers:
+
+Q1: What is JNI and why is it used?
+A1: JNI (Java Native Interface) is:
+- A framework that enables Java code to call native code (C/C++)
+- Allows access to platform-specific features
+- Enables reuse of existing native libraries
+- Provides system-level operations
+- Helps in performance-critical operations
+
+Q2: Explain the significance of the static block in the code.
+A2: The static block:
+```java
+static {
+    System.loadLibrary("SampleDLL");
+}
+```
+- Loads the native library when class is loaded
+- Executes before any methods are called
+- Essential for making native methods available
+- Throws UnsatisfiedLinkError if library not found
+
+Q3: What is the purpose of the 'native' keyword?
+A3: The 'native' keyword:
+- Declares a method implemented in native code
+- Indicates method body is in external library
+- Links Java method to native implementation
+- No method body in Java code
+- Must be implemented in native language (C/C++)
+
+Q4: How is the native method implemented in C/C++?
+A4: Native method implementation:
+- Created in C/C++ following JNI naming convention
+- Must match Java method signature
+- Example C header:
+```c
+JNIEXPORT jint JNICALL Java_SampleDLL_add
+  (JNIEnv *, jobject, jint, jint);
+```
+
+Q5: What are the steps to create and use a JNI program?
+A5: Steps are:
+1. Write Java code with native method declaration
+2. Compile Java code (javac)
+3. Generate header file (javah)
+4. Implement native method in C/C++
+5. Compile native code into shared library
+6. Run Java program with library in path
+
+Q6: What are potential issues when using JNI?
+A6: Potential issues:
+- Platform dependency
+- Security risks from native code
+- Debugging complexity
+- Performance overhead
+- Memory management issues
+- Version compatibility
+
+Q7: How does error handling work in JNI?
+A7: Error handling:
+- UnsatisfiedLinkError for missing library
+- Native code must handle its errors
+- Java can catch exceptions from native code
+- System.loadLibrary() can throw SecurityException
+- Important to handle both Java and native errors
+
+Q8: What is the difference between System.loadLibrary() and System.load()?
+A8: Differences:
+- loadLibrary(): Uses system library path
+- load(): Requires full path to library
+- loadLibrary() is platform-independent
+- load() needs platform-specific path
+- loadLibrary() is preferred for portability
+
+Q9: What security considerations should be taken when using JNI?
+A9: Security considerations:
+- Validate all native code
+- Control access to native methods
+- Handle memory safely
+- Check for buffer overflows
+- Implement proper error handling
+- Consider SecurityManager restrictions
+
+Q10: How can you improve the performance of JNI calls?
+A10: Performance improvements:
+- Minimize number of JNI calls
+- Batch operations when possible
+- Cache JNI references
+- Use direct ByteBuffers
+- Optimize data transfers
+- Profile native code
+
+These questions cover the important aspects of:
+- JNI basics and usage
+- Native method implementation
+- Security and performance
+- Error handling
+- Development process
+- Best practices
+
+This code demonstrates a simple but practical use of JNI for extending Java's capabilities through native code integration.

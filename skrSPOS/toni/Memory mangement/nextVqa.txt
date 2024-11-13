@@ -1,0 +1,38 @@
+### Theory and Explanation
+
+This C++ program implements the **Next-Fit Memory Allocation** strategy, a variation of the First-Fit algorithm. Here’s a breakdown of the code:
+
+1. **Data Structures and Initialization**:
+   - `blockSize` and `processSize` are vectors that store the sizes of memory blocks and processes, respectively.
+   - `allocation` is an integer vector initialized to `-1`, meaning no process is allocated initially.
+   - The variable `j` is used as an index pointer to track the last allocated memory block.
+
+2. **Next-Fit Algorithm**:
+   - For each process in `processSize`, the program searches for the next available memory block in a circular manner.
+   - If a block with sufficient space is found, the process is allocated to that block (`allocation[i] = j + 1` for 1-based indexing), and the block size is reduced by the size of the process.
+   - If no block has enough space, the process remains unallocated.
+
+3. **Circular Search Logic**:
+   - The search wraps around the `blockSize` vector using `j = (j + 1) % m`, ensuring the Next-Fit strategy. The loop counter `count` ensures a maximum of `m` checks to avoid infinite looping.
+
+4. **Output**:
+   - The results display each process’s size along with the block number to which it was allocated (or `-1` if unallocated).
+
+This approach is simple but may leave blocks unused, leading to **fragmentation** if processes require larger blocks. The Next-Fit algorithm is less efficient in terms of memory utilization but faster than First-Fit in some cases, as it doesn't restart from the beginning every time.
+
+### Viva Questions and Answers
+
+1. **Q**: What is the Next-Fit memory allocation strategy?
+   - **A**: The Next-Fit memory allocation strategy allocates each process to the next available memory block with sufficient space, starting from the block just after the last allocation.
+
+2. **Q**: How does this code prevent an infinite loop during block allocation?
+   - **A**: The code uses a counter (`count`) that ensures the search is limited to `m` blocks, preventing an infinite loop if there are no suitable blocks for a process.
+
+3. **Q**: Why do we initialize the `allocation` vector with `-1`?
+   - **A**: The `allocation` vector is initialized with `-1` to indicate that no process has been allocated a block initially. If a process remains unallocated, it will retain this value.
+
+4. **Q**: What would happen if there is insufficient memory in all blocks for a process?
+   - **A**: If all blocks lack sufficient memory for a process, it will remain unallocated, and the output will show `-1` for that process.
+
+5. **Q**: How does the Next-Fit strategy differ from First-Fit?
+   - **A**: Unlike First-Fit, which always starts the search from the beginning of the memory blocks, Next-Fit begins the search from the block immediately following the last allocated block, potentially improving performance in some cases.

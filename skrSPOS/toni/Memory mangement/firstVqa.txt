@@ -1,0 +1,64 @@
+I'll provide the theory, explanation, and viva questions for this First Fit Memory Allocation implementation.
+
+Theory:
+First Fit is a memory allocation strategy where:
+- The first available memory block that is large enough to accommodate the process is allocated
+- It scans memory blocks sequentially until finding a sufficient block
+- Simple and fast compared to Best Fit and Worst Fit
+- Can lead to external fragmentation over time
+
+Key Concepts:
+1. Sequential Search: Blocks are searched in order
+2. Memory Utilization: How effectively memory is used
+3. Search Speed: Time taken to find suitable blocks
+4. Fragmentation: Both internal and external
+5. Memory Block Management: Keeping track of available space
+
+Code Explanation:
+This implementation:
+1. Uses vectors to track memory allocation
+2. Takes input for:
+   - Number and sizes of memory blocks
+   - Number and sizes of processes
+3. For each process:
+   - Scans blocks sequentially
+   - Allocates first sufficient block
+   - Updates remaining block size
+4. Displays allocation results showing:
+   - Process number
+   - Process size
+   - Allocated block number
+
+Viva Questions and Answers:
+
+1. Q: What are the main advantages of First Fit over other memory allocation strategies?
+   A: First Fit offers several advantages:
+   - Simpler implementation
+   - Faster allocation time (O(n) vs O(n²) for Best Fit)
+   - Less computational overhead
+   - Good for systems where speed is more important than memory utilization
+   - Generally performs better than Best Fit in many practical situations
+
+2. Q: How does the break statement in the inner loop affect the algorithm's behavior?
+   A: The break statement exits the inner loop as soon as a suitable block is found for a process. This implements the "first fit" strategy by ensuring that the process is allocated to the first available block that's large enough, rather than continuing to search for potentially better blocks.
+
+3. Q: What is the significance of initializing the allocation vector with -1?
+   A: The allocation vector is initialized with -1 to:
+   - Indicate unallocated processes initially
+   - Serve as a flag for allocation failure
+   - Help distinguish between allocated processes (positive block numbers) and unallocated ones (-1)
+   - Make it easy to identify processes that couldn't be allocated in the output
+
+4. Q: What are the potential drawbacks of using First Fit allocation?
+   A: First Fit has several drawbacks:
+   - Can lead to higher external fragmentation compared to Best Fit
+   - May not utilize memory as efficiently as Best Fit
+   - Early memory blocks tend to get split into small pieces
+   - Performance can degrade over time as memory becomes fragmented
+
+5. Q: How does this implementation handle the remaining space in blocks after allocation?
+   A: The implementation handles remaining space by:
+   - Subtracting the process size from the block size (blockSize[j] -= processSize[i])
+   - Keeping track of the reduced block size for future allocations
+   - Allowing the remaining space to be used for future processes if large enough
+   - The remaining space stays with the original block, potentially leading to internal fragmentation
